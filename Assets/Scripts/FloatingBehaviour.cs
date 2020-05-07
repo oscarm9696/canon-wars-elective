@@ -31,7 +31,7 @@ public class FloatingBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        waterDensity = Random.Range(2f,3.5f);
+        waterDensity = Random.Range(2f,2.8f);
         force = 1.0f - ((transform.position.y - waterHeight) / waterDensity);
         
         //gets transform of mesh and checks if force is greater than its height

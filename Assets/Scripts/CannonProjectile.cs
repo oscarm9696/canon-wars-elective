@@ -10,7 +10,7 @@ public class CannonProjectile : MonoBehaviour
     public LayerMask layer;
     public GameObject cursorImpactP;
     public float shootTime;
-    public int lineLength = 300;
+    public int line = 300;
 
     private Camera mCam;
     
@@ -18,7 +18,7 @@ public class CannonProjectile : MonoBehaviour
     void Start()
     {
         mCam = Camera.main;
-        trajectory.positionCount = lineLength;
+        trajectory.positionCount = line;
     }
 
     // Update is called once per frame
@@ -29,9 +29,9 @@ public class CannonProjectile : MonoBehaviour
 
     void Visualise(Vector3 vo)
     {
-        for(int i = 0; i < lineLength; i++)
+        for(int i = 0; i < line; i++)
         {
-            Vector3 pos = CalculateTragectory(vo, i / (float)lineLength);
+            Vector3 pos = CalculateTragectory(vo, i / (float)line);
             trajectory.SetPosition(i, pos);
         }
     }
