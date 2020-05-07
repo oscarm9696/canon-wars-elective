@@ -25,6 +25,7 @@ public class BoatMovement : MonoBehaviour
     {
         move();
         Debug.Log(accSpeed);
+        ApplyCOG();
     }
 
     void move()

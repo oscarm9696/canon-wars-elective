@@ -10,6 +10,7 @@ public class CannonProjectile : MonoBehaviour
     public LayerMask layer;
     public GameObject cursorImpactP;
     public float shootTime;
+    public int lineLength = 300;
 
     private Camera mCam;
     
@@ -17,12 +18,22 @@ public class CannonProjectile : MonoBehaviour
     void Start()
     {
         mCam = Camera.main;
+        trajectory.positionCount = lineLength;
     }
 
     // Update is called once per frame
     void Update()
     {
         FireCannon();
+    }
+
+    void Visualise(Vector3 vo)
+    {
+        for(int i = 0; i < lineLength; i++)
+        {
+            Vector3 pos = CalculateTragectory(vo, i / (float)lineLength);
+            trajectory.SetPosition(i, pos);
+        }
     }
 
     void FireCannon()
@@ -37,6 +48,7 @@ public class CannonProjectile : MonoBehaviour
             cursorImpactP.transform.position = hit.point + Vector3.up * 0.1f;
 
             Vector3 calcVelo = calcVelocity(hit.point, transform.position, 1f);
+            Visualise(calcVelo);
 
             transform.rotation = Quaternion.LookRotation(calcVelo);
             if (Input.GetMouseButtonDown(0))
@@ -71,5 +83,17 @@ public class CannonProjectile : MonoBehaviour
         calculation.y = velocityVert;
 
         return calculation;
+    }
+
+    Vector3 CalculateTragectory(Vector3 vo, float time)
+    {
+        Vector3 Vxz = vo;
+        Vxz.y = 0.0f;
+        Vector3 result = ship.position + vo * time;
+        float sY = (-0.5f * Mathf.Abs(Physics.gravity.y) * (time * time)) + (vo.y * time) + ship.position.y;
+
+        result.y = sY;
+
+        return result;
     }
 }
