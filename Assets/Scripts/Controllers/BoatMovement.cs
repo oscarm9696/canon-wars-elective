@@ -12,6 +12,8 @@ public class BoatMovement : MonoBehaviour
     public float accSpeed;
     public float turnSpeed;
 
+    public ParticleSystem impactParticle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +39,7 @@ public class BoatMovement : MonoBehaviour
 
     }
 
+    
     void ApplyCOG()
     {
         if (!mCenterOfGrav)

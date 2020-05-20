@@ -11,6 +11,10 @@ public class CannonProjectile : MonoBehaviour
     public GameObject cursorImpactP;
     public float shootTime;
     public int line;
+    public Transform pivotP;
+    public ParticleSystem pS;
+    public ParticleSystem shootEffect;
+    Vector3 pivotPoint;
 
     private Camera mCam;
     
@@ -18,23 +22,40 @@ public class CannonProjectile : MonoBehaviour
     void Start()
     {
         mCam = Camera.main;
-        trajectory.positionCount = line;
+       // trajectory.positionCount = line;
     }
 
     // Update is called once per frame
     void Update()
     {
         FireCannon();
+    
     }
 
-    void Visualise(Vector3 vo)
+    //void Visualise(Vector3 vo)
+   // {
+       // for(int i = 0; i < line; i++)
+       // {
+     //       Vector3 pos = CalculateTragectory(vo, i / (float)line);
+            //trajectory.SetPosition(i, pos);
+     //   }
+   // }
+
+    /*public IEnumerator CamShake(float intensity, float time)
     {
-        for(int i = 0; i < line; i++)
+        Quaternion origPos = ship.transform.rotation;
+        float timer = 0.0f;
+        float x;
+        float y;
+
+        while (timer < time)
         {
-            Vector3 pos = CalculateTragectory(vo, i / (float)line);
-            trajectory.SetPosition(i, pos);
+            ship.transform.Rotate(0.5f, 0f, -.05f);
+            timer += Time.deltaTime;
+            yield return null;  
         }
-    }
+        ship.transform.rotation = origPos;
+    } */
 
     void FireCannon()
     {
@@ -48,13 +69,16 @@ public class CannonProjectile : MonoBehaviour
             cursorImpactP.transform.position = hit.point + Vector3.up * 0.1f;
 
             Vector3 calcVelo = calcVelocity(hit.point, transform.position, 1f);
-            Visualise(calcVelo);
+          //  Visualise(calcVelo);
 
             transform.rotation = Quaternion.LookRotation(calcVelo);
             if (Input.GetMouseButtonDown(0))
             {
                 Rigidbody rb = Instantiate(cannonBall, ship.position, Quaternion.identity);
                 rb.velocity = calcVelo;
+                //pS.Play();
+                shootEffect.Play();
+               // ship.transform.RotateAround(pivotPoint, 5f);
             }
         }
         else
@@ -85,12 +109,12 @@ public class CannonProjectile : MonoBehaviour
         return calculation;
     }
 
-    Vector3 CalculateTragectory(Vector3 vo, float time)
+    Vector3 CalculateTragectory(Vector3 velocity1, float time)
     {
-        Vector3 Vxz = vo;
+        Vector3 Vxz = velocity1;
         Vxz.y = 0.0f;
-        Vector3 result = ship.position + vo * time;
-        float sY = (-0.5f * Mathf.Abs(Physics.gravity.y) * (time * time)) + (vo.y * time) + ship.position.y;
+        Vector3 result = ship.position + velocity1 * time;
+        float sY = (-0.5f * Mathf.Abs(Physics.gravity.y) * (time * time)) + (velocity1.y * time) + ship.position.y;
 
         result.y = sY;
 
