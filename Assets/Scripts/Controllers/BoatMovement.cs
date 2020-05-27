@@ -11,6 +11,7 @@ public class BoatMovement : MonoBehaviour
 
     public float accSpeed;
     public float turnSpeed;
+    public float rotSpeed;
 
     public float minT;
     public float maxT;
@@ -47,6 +48,7 @@ public class BoatMovement : MonoBehaviour
 
         rb.AddTorque(0f, hor * turnSpeed * Time.deltaTime, 0f);
         rb.AddForce(transform.forward * accSpeed * Time.deltaTime);
+        rb.transform.Rotate(Vector3.back, hor * rotSpeed * Time.deltaTime);
 
         if (!isGusting)
         {
@@ -74,9 +76,9 @@ public class BoatMovement : MonoBehaviour
         Debug.Log(accSpeed);
         yield return new WaitForSeconds(time);
         accSpeed = Random.Range(250f, 450f);
-        turnSpeed = Random.Range(0f, 3f);
-        floating.waterDensity = Random.Range(0f, 4f);
-        wave.waveHeight = Random.Range(10f, 20f);
+        turnSpeed = Random.Range(2f, 3f);
+        //floating.waterDensity = Random.Range(0f, 4f);
+        //wave.waveHeight = Random.Range(10f, 20f);
        
         rb.AddForce(transform.forward * accSpeed * Time.deltaTime);
 

@@ -45,6 +45,7 @@ public class EnemyAI : MonoBehaviour
     {
         //ship.GetComponent<ParticleSystem>();
         curHealth = aiHealth;
+        HardDifficulty();
         
     }
 
@@ -87,7 +88,7 @@ public class EnemyAI : MonoBehaviour
     {
         aiHealth = 125;
         damgeTaken = .5f;
-        shootTime = Random.Range(1.75f, 3.75f);
+        shootTime = Random.Range(.5f, 1.5f);
     }
     private void MediumDifficulty()
     {
@@ -99,7 +100,7 @@ public class EnemyAI : MonoBehaviour
     {
         aiHealth = 125;
         damgeTaken = 2f; 
-        shootTime = Random.Range(1.75f, 3.75f);
+        shootTime = Random.Range(1.75f, 5.75f);
     }
 
     void SinkShip()
