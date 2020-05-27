@@ -26,8 +26,10 @@ public class EnemyAI : MonoBehaviour
     bool cooledDown = false;
 
     float distance;
+    public float speed = 500f;
 
     public float aiHealth;
+    public float damgeTaken = 1f;
     public float curHealth;
     public float aiDifficulty;
     public float ammunition;
@@ -55,6 +57,11 @@ public class EnemyAI : MonoBehaviour
         if(aiHealth <= 60f)
         {
             seriousDamage.Play();
+            shootTime = Random.Range(1.75f, 3.75f);
+            coolDown = 3f; 
+
+            //increase enemy difficuty - speed - accuracy - shoot time 
+            //reduce damage taken
         }
     }
 
@@ -62,7 +69,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (collision.gameObject.tag == "PlayerCannon")
         {
-            aiHealth -= 1;
+            aiHealth -= damgeTaken;
             pSImpact.Play();                                                                                                                                          
             SinkShip();
             healthSlider.fillAmount -= .01F;
@@ -76,9 +83,22 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void IncreaseDifficulty()
+    private void HardDifficulty()
     {
         aiHealth = 125;
+        damgeTaken = .5f;
+        shootTime = Random.Range(1.75f, 3.75f);
+    }
+    private void MediumDifficulty()
+    {
+        aiHealth = 125;
+        damgeTaken = 1f;
+        shootTime = Random.Range(1.75f, 3.75f);
+    }
+    private void EasyDifficulty()
+    {
+        aiHealth = 125;
+        damgeTaken = 2f; 
         shootTime = Random.Range(1.75f, 3.75f);
     }
 
@@ -109,7 +129,7 @@ public class EnemyAI : MonoBehaviour
 
     void EnemyNav()
     {
-        enemyNav.SetDestination(target.position);
+        enemyNav.SetDestination(target.position * speed * Time.deltaTime);
         ApplyCOG();
 
         distance = Vector3.Distance(target.position, transform.position);

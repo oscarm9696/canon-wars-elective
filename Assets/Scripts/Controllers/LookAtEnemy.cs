@@ -23,6 +23,7 @@ public class LookAtEnemy : MonoBehaviour
     {
         transform.position = player.position + offset;
         transform.LookAt(enemy);
+ 
    
     }
 
