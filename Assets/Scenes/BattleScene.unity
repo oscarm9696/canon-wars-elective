@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 3228469}
   m_Layer: 0
   m_Name: Enviroment
-  m_TagString: Untagged
+  m_TagString: Enviroment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -566,6 +566,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2268,6 +2272,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 115
@@ -3170,6 +3178,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 20ca72a38b52d1c4fb96336968118bb5, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 20ca72a38b52d1c4fb96336968118bb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 94.03578
@@ -4056,6 +4068,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aa7bb876c0199c248bc1e76e7d4212ae, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aa7bb876c0199c248bc1e76e7d4212ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: -108.96422
@@ -4205,41 +4221,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &620015972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 620015969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 302a6d61fb827494b8cc52c6c3e600a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ship: {fileID: 260619075}
-  cannonBall: {fileID: 3585401379151372170, guid: b0813a1b9b36a2543a7a2103a2fb4a9c,
-    type: 3}
-  player: {fileID: 1823877465}
-  beginFireRadius: 400
-  target: {fileID: 1823877466}
-  enemyNav: {fileID: 2073698638}
-  layer:
-    serializedVersion: 2
-    m_Bits: 1
-  pSImpact: {fileID: 828063541}
-  pSImpact2: {fileID: 1342251472}
-  canonSmoke: {fileID: 2018874250}
-  seriousDamage: {fileID: 1946075823}
-  centerOfGrav: {x: 0, y: -0.02, z: 0}
-  coolDown: 2
-  aiHealth: 100
-  curHealth: 0
-  aiDifficulty: 0
-  ammunition: 0
-  shootTime: 4
-  impactDamage: 0.2
-  healthSlider: {fileID: 733309928}
 --- !u!64 &620015974
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9099,7 +9080,7 @@ GameObject:
   - component: {fileID: 689424998}
   m_Layer: 0
   m_Name: Rocks
-  m_TagString: Untagged
+  m_TagString: Enviroment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9671,7 +9652,7 @@ MonoBehaviour:
   waterDensity: 3
   waterDisplacement: 0.0001
   gravity: 1
-  boatDisplace: 9
+  boatDisplace: 0
 --- !u!54 &810416767
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9686,7 +9667,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 3
 --- !u!4 &810416768
 Transform:
@@ -9696,7 +9677,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810416763}
   m_LocalRotation: {x: 0.02584284, y: -0.0018576684, z: 0.016554197, w: 0.9995272}
-  m_LocalPosition: {x: 393.4, y: -1.7, z: 239.4}
+  m_LocalPosition: {x: 393, y: 1.9, z: 239.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 225881516}
@@ -9765,6 +9746,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10454,6 +10439,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 753a2b379bebfc84497c40753ca9b182, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 753a2b379bebfc84497c40753ca9b182, type: 3}
       propertyPath: m_LocalPosition.x
       value: 294
@@ -10887,6 +10876,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11329,6 +11322,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SideWalls (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4190614563404203407, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 3685684504884644687, guid: 279e99f70fad84d43aa550e4f7a2710c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11473,6 +11471,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12092,6 +12094,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
       propertyPath: m_LocalPosition.x
       value: 369.1358
@@ -12162,6 +12168,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SideWalls (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4190614563404203407, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
+    - target: {fileID: 113099194796513070, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363723076864792794, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 3685684504884644687, guid: 279e99f70fad84d43aa550e4f7a2710c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12216,6 +12237,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9003379971221253140, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 279e99f70fad84d43aa550e4f7a2710c, type: 3}
@@ -12319,6 +12345,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3f64625f316ac2a45a108e7c7ba12191, type: 3}
       propertyPath: m_LocalPosition.x
       value: -189
@@ -12395,6 +12425,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 753a2b379bebfc84497c40753ca9b182, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 753a2b379bebfc84497c40753ca9b182, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 753a2b379bebfc84497c40753ca9b182, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13313,6 +13347,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ccae98ffa1a4d6b45aca9e0b18a5e1b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19664,6 +19702,10 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
       propertyPath: m_LocalPosition.x
       value: 419.03577
@@ -19786,6 +19828,10 @@ GameObject:
   - component: {fileID: 2073698640}
   - component: {fileID: 2073698638}
   - component: {fileID: 2073698642}
+  - component: {fileID: 2073698644}
+  - component: {fileID: 2073698643}
+  - component: {fileID: 2073698645}
+  - component: {fileID: 2073698646}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -19883,6 +19929,108 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
+--- !u!114 &2073698643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073698637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    VectorActionSize: 0100000001000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 2
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+--- !u!114 &2073698644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073698637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: RayPerceptionSensor
+  m_DetectableTags:
+  - Player
+  - Enviroment
+  - 
+  m_RaysPerDirection: 3
+  m_MaxRayDegrees: 70
+  m_SphereCastRadius: 0.5
+  m_RayLength: 212
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
+--- !u!114 &2073698645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073698637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 302a6d61fb827494b8cc52c6c3e600a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ship: {fileID: 260619075}
+  cannonBall: {fileID: 3585401379151372170, guid: b0813a1b9b36a2543a7a2103a2fb4a9c,
+    type: 3}
+  player: {fileID: 1823877465}
+  beginFireRadius: 400
+  target: {fileID: 1823877466}
+  enemyNav: {fileID: 2073698638}
+  layer:
+    serializedVersion: 2
+    m_Bits: 1
+  pSImpact: {fileID: 828063541}
+  pSImpact2: {fileID: 1342251472}
+  canonSmoke: {fileID: 2018874250}
+  seriousDamage: {fileID: 1946075823}
+  centerOfGrav: {x: 0, y: -0.02, z: 0}
+  coolDown: 2
+  aiHealth: 100
+  curHealth: 0
+  aiDifficulty: 0
+  ammunition: 0
+  shootTime: 4
+  impactDamage: 0.2
+  healthSlider: {fileID: 733309928}
+--- !u!114 &2073698646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073698637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 2
+  TakeActionsBetweenDecisions: 1
 --- !u!1001 &2085602751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19978,6 +20126,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: beca96187d33b6d4f9bcbf420499a905, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20127,6 +20279,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SideWalls (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4190614563404203407, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 3685684504884644687, guid: 279e99f70fad84d43aa550e4f7a2710c,
         type: 3}
@@ -20479,6 +20636,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SideWalls
+      objectReference: {fileID: 0}
+    - target: {fileID: 4190614563404203407, guid: 279e99f70fad84d43aa550e4f7a2710c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enviroment
       objectReference: {fileID: 0}
     - target: {fileID: 3685684504884644687, guid: 279e99f70fad84d43aa550e4f7a2710c,
         type: 3}
