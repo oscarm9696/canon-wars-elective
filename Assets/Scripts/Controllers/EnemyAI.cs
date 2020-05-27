@@ -45,7 +45,6 @@ public class EnemyAI : MonoBehaviour
     {
         //ship.GetComponent<ParticleSystem>();
         curHealth = aiHealth;
-        HardDifficulty();
         
     }
 
