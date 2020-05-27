@@ -28,8 +28,6 @@ public class BoatMovement : MonoBehaviour
         ApplyCOG();   //center of gravity
     }
 
-    // ensures constant movement in forward direction to mimic wind
-    // arrow keys to steer / AD
     void move()
     {
         float hor = Input.GetAxis("Horizontal");

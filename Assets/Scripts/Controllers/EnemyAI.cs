@@ -88,7 +88,7 @@ public class EnemyAI : MonoBehaviour
           enemyNav.baseOffset -= impactDamage;
     }
 
-    //for debugging visuals, shows enemy radius projectile range in editor
+    //for debugging visuals, shows enemy radius projectile range
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
