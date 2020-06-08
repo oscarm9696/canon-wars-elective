@@ -26,7 +26,12 @@ public class EnemyAI : MonoBehaviour
     bool cooledDown = false;
 
     float distance;
+    public float avoidDistance;
     public float speed = 500f;
+
+    public float radius1;
+    public Vector3 randomPosinRadius;
+    bool reachedPos;
 
     public float aiHealth;
     public float damgeTaken = 1f;
@@ -45,14 +50,22 @@ public class EnemyAI : MonoBehaviour
     {
         //ship.GetComponent<ParticleSystem>();
         curHealth = aiHealth;
-        
+        radius1 = beginFireRadius;
+
+        Vector3 offset = Random.insideUnitCircle * radius1;
+        randomPosinRadius = ship.position + offset;
+        enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
+
+       // Debug.Log(randomPosinRadius);
     }
 
     // Update is called once per frame
     void Update()
     {
+       // Debug.Log(randomPosinRadius);
         EnemyNav();
         shootTime = Random.Range(3f, 7f);
+
 
         if(aiHealth <= 60f)
         {
@@ -115,6 +128,29 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, beginFireRadius);
     }
 
+    IEnumerator GetRandomPos(float time)
+    {
+       // enemyNav.SetDestination(target.position);
+        reachedPos = false;
+
+
+        yield return new WaitForSeconds(time);
+
+        Vector3 offset = Random.insideUnitCircle * radius1;
+        randomPosinRadius = ship.position + offset;
+        enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
+
+        reachedPos = true;
+    }
+
+
+   /* public Vector3 GetPositionAroundObject()
+    {
+        Vector3 offset = Random.insideUnitCircle * radius1;
+        randomPosinRadius = target.position + offset;
+        return randomPosinRadius;
+    }  */
+
     //center of gravity for boat, should be between -.5 - 0.0
     void ApplyCOG()
     {
@@ -129,8 +165,13 @@ public class EnemyAI : MonoBehaviour
 
     void EnemyNav()
     {
-        enemyNav.SetDestination(target.position * speed * Time.deltaTime);
-        ApplyCOG();
+         enemyNav.SetDestination(randomPosinRadius.normalized * speed * Time.deltaTime);
+        if (!reachedPos)
+        {
+            StartCoroutine(GetRandomPos(50));
+        }
+   
+        //ApplyCOG();
 
         distance = Vector3.Distance(target.position, transform.position);
         if (!cooledDown)
@@ -146,11 +187,16 @@ public class EnemyAI : MonoBehaviour
             }
         }
         cooledDown = false;
+
+        if(distance <= avoidDistance)
+        {
+            enemyNav.SetDestination(randomPosinRadius);
+        }
     }
 
     void FireCannon()
     {
-        Vector3 calcVelo = calcVelocity(target.position, transform.position, 1f);
+        Vector3 calcVelo = CalcVelocity(target.position, transform.position, 1f);
         //transform.rotation = Quaternion.LookRotation(calcVelo);
         Rigidbody rb = Instantiate(cannonBall, ship.position, Quaternion.identity);
         rb.velocity = calcVelo;
@@ -159,8 +205,10 @@ public class EnemyAI : MonoBehaviour
       
     }
 
-    //calculating velocity based on x, y, z values in relation to time
-    Vector3 calcVelocity(Vector3 playerTarget, Vector3 originP, float time)
+    //calculating velocity of cannon ball based on x, y, z values in relation to time
+    //using DST (distance / speed = time, distance / time = speed, time x speed = distance)
+    //vert distance = max height (5f) / time * gravity 
+    Vector3 CalcVelocity(Vector3 playerTarget, Vector3 originP, float time)
     {
         time = shootTime;
 

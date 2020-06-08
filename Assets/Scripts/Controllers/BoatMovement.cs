@@ -76,7 +76,7 @@ public class BoatMovement : MonoBehaviour
         Debug.Log(accSpeed);
         yield return new WaitForSeconds(time);
         accSpeed = Random.Range(250f, 450f);
-        turnSpeed = Random.Range(2f, 3f);
+        turnSpeed = Random.Range(2f, 3f);        
         //floating.waterDensity = Random.Range(0f, 4f);
         //wave.waveHeight = Random.Range(10f, 20f);
        
