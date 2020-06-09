@@ -6,7 +6,7 @@ using UnityEngine;
 public class ExampleGameController : MonoBehaviour
 {
     public CameraMultiTarget cameraMultiTarget;
-    public Transform[] targets;
+    public GameObject[] targets;
 
     private void Start() {
         
