@@ -21,8 +21,13 @@ public class LookAtEnemy : MonoBehaviour
     // checks if player renderer is visible
     void LateUpdate()
     {
-        transform.position = player.position + offset;
-        transform.LookAt(enemy);
+        //transform.position = player.position + offset;
+        //transform.LookAt(GetPlayerPos());
+        //GetPlayerPos();
+        Debug.Log(targets);
+        transform.position = GetPlayerPos() + offset;
+        transform.Rotate(GetPlayerPos());
+        transform.LookAt(GetPlayerPos());
  
    
     }

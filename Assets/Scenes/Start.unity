@@ -737,7 +737,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: start game
+  m_Text: Play
 --- !u!222 &1089153017
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1088,7 +1088,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 62
-    m_Alignment: 1
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1399,7 +1399,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Leave game
+  m_Text: Leave
 --- !u!222 &1836468642
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1651,16 +1651,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'OBJECTIVES:
+  m_Text: 'AI Simulator:
 
 
-    Destroy the enemy ship!
+    Press ''play'' to watch a battle between two pirate ships (A very mediocre battle
+    at that)
 
 
-    Use Arrow Keys or WASD to navigate the seas.
-
-
-    Right Click to fire your cannon.'
+    More coming soon!'
 --- !u!222 &1957481504
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1815,16 +1813,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'OBJECTIVES:
+  m_Text: 'AI Simulator:
 
 
-    Destroy the enemy ship!
+    Press ''play'' to watch a battle between two pirate ships (A very mediocre battle
+    at that)
 
 
-    Use Arrow Keys or WASD to navigate the seas.
-
-
-    Right Click to fire your cannon.'
+    More coming soon!'
 --- !u!222 &2132468497
 CanvasRenderer:
   m_ObjectHideFlags: 0

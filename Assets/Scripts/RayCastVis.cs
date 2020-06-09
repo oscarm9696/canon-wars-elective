@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RayCastVis : MonoBehaviour
+{
+    public float rayDistance;
+    public Transform rayStartPos;
+    private RaycastHit detectorRay;
+
+    DefenceAI defAi;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        RaycastHandler();
+    }
+
+    void RaycastHandler()
+    {
+        Debug.DrawRay(rayStartPos.position, rayStartPos.forward * rayDistance, Color.cyan, .5f);
+
+        if (Physics.Raycast(rayStartPos.position, rayStartPos.forward, out detectorRay, rayDistance))
+        {
+            if(detectorRay.collider.tag == "Looter")
+            {
+                Debug.Log(detectorRay.collider.name);
+                
+            }
+            else
+            {
+                defAi.Patrol();
+            }
+        }
+
+    }
+}
