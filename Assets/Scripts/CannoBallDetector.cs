@@ -30,12 +30,8 @@ public class CannoBallDetector : MonoBehaviour
         
     }
 
-    /*private void Avoid()
-    {
-        Vector3 pos = GetPositionAroundObject();
-    
-    }  */
-
+    //had intention to use this as a secondry avoid behaviour except
+    //for in closer combat siutations
     Vector3 GetPositionAroundObject()
     {
         Vector3 offset = Random.insideUnitCircle * radius;
@@ -45,6 +41,7 @@ public class CannoBallDetector : MonoBehaviour
         return pos;
     }
 
+    //detects cannon and sets nav to random pos generated below
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "PlayerCannon")
@@ -53,15 +50,13 @@ public class CannoBallDetector : MonoBehaviour
             nav.speed = 20f;
             nav.angularSpeed = 40f;
             nav.SetDestination(GetARandomTreePos() * speed * Time.deltaTime);
-            OnDrawGizmos(GetARandomTreePos(), 50f);
+  
             
         }
-        else
-        {
-           // nav.SetDestination(targetShip.position * speed * Time.deltaTime);
-        }
+
     }
 
+    //gets a random pos within the water area mesh
     public Vector3 GetARandomTreePos()
     {
 
@@ -83,11 +78,6 @@ public class CannoBallDetector : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    private void OnDrawGizmos(Vector3 t, float radius)
-    {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(t, radius);
-    }
 
 
 }

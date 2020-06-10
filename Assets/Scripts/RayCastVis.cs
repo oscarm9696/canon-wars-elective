@@ -9,11 +9,12 @@ public class RayCastVis : MonoBehaviour
     private RaycastHit detectorRay;
 
     DefenceAI defAi;
+    public GameObject defenceObject;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        defAi = defenceObject.GetComponent<DefenceAI>();
     }
 
     // Update is called once per frame
