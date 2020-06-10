@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class ExampleGameController : MonoBehaviour
 {
-    public CameraMultiTarget cameraMultiTarget;
+    public CameraMultiTarget multiTarget;
     public GameObject[] targets;
 
     private void Start() {
         
-        cameraMultiTarget.SetTargets(targets);
-        cameraMultiTarget.SetTargets(targets);
-        }
+        multiTarget.SetTargets(targets);
+        multiTarget.SetTargets(targets);
+    }
 }

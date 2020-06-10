@@ -13,6 +13,9 @@ public class CameraMultiTarget : MonoBehaviour
 	public float PaddingDown;
 	public float MoveSmoothTime = 0.19f;
 
+    public float rotateMapTime;
+    public Bounds camBounds;
+
 	private Camera _camera;
 	private GameObject[] _targets = new GameObject[0];
 	private DebugProjection _debugProjection;
@@ -31,6 +34,7 @@ public class CameraMultiTarget : MonoBehaviour
 	}
 
 	private void LateUpdate() {
+
 		if (_targets.Length == 0)
 			return;
 		
@@ -39,6 +43,8 @@ public class CameraMultiTarget : MonoBehaviour
 		Vector3 velocity = Vector3.zero;
 		transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime);
 		transform.rotation = targetPositionAndRotation.Rotation;
+
+        Yaw -= 10f * Time.deltaTime;
 	}
 	
 	PositionAndRotation TargetPositionAndRotation(GameObject[] targets)
