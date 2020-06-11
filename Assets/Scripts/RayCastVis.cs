@@ -32,6 +32,8 @@ public class RayCastVis : MonoBehaviour
             if(detectorRay.collider.tag == "Looter")
             {
                 Debug.Log(detectorRay.collider.name);
+                defAi.Attack();
+
                 
             }
             else

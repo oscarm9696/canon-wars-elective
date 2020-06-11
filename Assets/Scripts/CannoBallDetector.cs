@@ -5,10 +5,11 @@ using UnityEngine.AI;
 
 public class CannoBallDetector : MonoBehaviour
 {
-    public NavMeshAgent nav;
+   /* public NavMeshAgent nav;
     public Mesh waterArea;
     public Transform thisShip;
     public Transform[] targetShip;
+    [HideInInspector]
     public Transform target;
 
 
@@ -21,7 +22,7 @@ public class CannoBallDetector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shipPos = thisShip.position; 
+        //shipPos = thisShip.position; 
     }
 
     // Update is called once per frame
@@ -49,7 +50,7 @@ public class CannoBallDetector : MonoBehaviour
             Debug.Log("Incoming!!");
             nav.speed = 20f;
             nav.angularSpeed = 40f;
-            nav.SetDestination(GetARandomTreePos() * speed * Time.deltaTime);
+            nav.SetDestination(GetARandomPos() * speed * Time.deltaTime);
   
             
         }
@@ -57,7 +58,7 @@ public class CannoBallDetector : MonoBehaviour
     }
 
     //gets a random pos within the water area mesh
-    public Vector3 GetARandomTreePos()
+    public Vector3 GetARandomPos()
     {
 
         Bounds bounds = waterArea.bounds;
@@ -77,7 +78,7 @@ public class CannoBallDetector : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
-
-
+            
+        */
 
 }

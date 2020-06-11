@@ -23,7 +23,7 @@ public class DefenceAI : MonoBehaviour
     Transform mCenterOfGrav;
     Vector3 origin;
 
-    public Vector3[] patrolPoints;
+    public Transform[] patrolPoints;
 
     public float coolDown = 0f;
     bool cooledDown = false;
@@ -59,10 +59,7 @@ public class DefenceAI : MonoBehaviour
     void Start()
     {
         curHealth = aiHealth;
-   //     radius1 = beginFireRadius;
-
         timer = wanderTime;
-
     }
 
 
@@ -73,7 +70,7 @@ public class DefenceAI : MonoBehaviour
         origin = transform.position;
 
         EnemyNav();
-        Avoid();
+      //  Avoid();
 
         shootTime = Random.Range(3f, 7f);
 
@@ -89,36 +86,18 @@ public class DefenceAI : MonoBehaviour
         }
         if(timer >= wanderTime)
         {
-            Debug.Log("wandering");
+            //Debug.Log("wandering");
             Vector3 goTo = RandomNavSphere(transform.position, wanderRad, -1);
             enemyNav.SetDestination(goTo);
             timer = 0f;
         }
         else
         {
-            Debug.Log("hunting");
+           // Debug.Log("hunting");
             EnemyNav();
         }
     }
 
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "EnemyCannon")
-        {
-            /*aiHealth -= damgeTaken;
-            pSImpact.Play();
-            SinkShip();
-            healthSlider.fillAmount -= .01F;
-            Debug.Log(aiHealth);
-
-            if (aiHealth <= 80)
-            {
-                pSImpact2.Play();
-            }          */
-
-        }
-    }
 
     public Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
     {
@@ -175,17 +154,13 @@ public class DefenceAI : MonoBehaviour
 
     IEnumerator GetRandomPos(float time)
     {
-        // enemyNav.SetDestination(target.position);
-        reachedPos = false;
-
 
         yield return new WaitForSeconds(time);
 
         Vector3 offset = Random.insideUnitCircle * radius1;
-        randomPosinRadius = target.position + offset;
+        randomPosinRadius = ship.position + offset;
         enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
 
-        reachedPos = true;
     }
 
 
@@ -219,6 +194,7 @@ public class DefenceAI : MonoBehaviour
         distance = Vector3.Distance(target.position, transform.position);
         if (!cooledDown)
         {
+            
             coolDown += Time.deltaTime;
 
             if (distance <= beginFireRadius && coolDown > 5f)
@@ -239,40 +215,38 @@ public class DefenceAI : MonoBehaviour
         //transform.rotation = Quaternion.LookRotation(calcVelo);
         Rigidbody rb = Instantiate(cannonBall, ship.position, Quaternion.identity);
         rb.velocity = calcVelo;
+        enemyNav.speed = 0;
         canonSmoke.Play();
 
 
     }
 
-    void Avoid()
+    public void Attack()
     {
-        distance = Vector3.Distance(target.position, transform.position);
-        if(distance <= retreatDistance)
-        {
-            enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
-        }
+        enemyNav.SetDestination(target.position);
     }
-
 
     public void Patrol()
     {
-        Debug.Log("patrolling");
+      //  Debug.Log("patrolling");
         enemyNav.isStopped = false;
+
+        int i = Random.Range(0, 7); //8 patrol point
+
         if (patrolPoints.Length > 0)
         {
-            enemyNav.SetDestination(patrolPoints[curPoint]);
-            if (transform.position == patrolPoints[curPoint] || Vector3.Distance(transform.position, patrolPoints[curPoint]) < 0.2f)
+            enemyNav.SetDestination(patrolPoints[i].position); //ensure defense ships alwasy start randomly
+
+            if (transform.position == patrolPoints[curPoint].position || Vector3.Distance(transform.position, patrolPoints[curPoint].position) < 0.2f)
             {
-                curPoint++;    //use distance if needed(lower precision)
+                //curPoint++;    //use distance if needed(lower precision)
             }
             if (curPoint >= patrolPoints.Length)
             {
-                curPoint = 0;
+               // curPoint = 0;
             }
         }
     }
-
-
 
     //calculating velocity of cannon ball based on x, y, z values in relation to time
     //using DST (distance / speed = time, distance / time = speed, time x speed = distance)

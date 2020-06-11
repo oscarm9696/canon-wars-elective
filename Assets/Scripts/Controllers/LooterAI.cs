@@ -8,42 +8,45 @@ public class LooterAI : MonoBehaviour
 {
     public Transform ship;
     public Transform endGoal;
-    public GameObject player;
 
+    public Transform[] gotoPoints;
     public Transform[] enemy;
 
-    public float beginFireRadius;
+    Transform closestShip;
+
     public float detectEnemyRange;
-    public Transform target;
-    public NavMeshAgent enemyNav;
+    public NavMeshAgent nav;
     public LayerMask layer;
     public ParticleSystem pSImpact;
     public ParticleSystem pSImpact2;
-    public ParticleSystem canonSmoke;
     public ParticleSystem seriousDamage;
 
-   // public Mesh waterArea;
+    public GameObject checkPointD;
+    private CheckPointCol check;
 
 
-    public float coolDown = 0f;
-    bool cooledDown = false;
 
     float distance;
     public float avoidDistance;
-    public float speed = 500f;
+    public float speed;
+    private int enemyId;
 
     public float radius1;
     public Vector3 randomPosinRadius;
     public float headStart;
-    float leftToPos; //how much is left t random pos
-    bool reachedPos;
-    bool avoiding;
+    
+
+    [HideInInspector]
+    public int curLoot = 0;
 
     public float aiHealth;
     public float damgeTaken = 1f;
     public float curHealth;
     public float impactDamage;
+
     bool noHealth;
+    bool reachedLoot;
+    bool avoiding;
 
     public Image healthSlider;
 
@@ -52,22 +55,39 @@ public class LooterAI : MonoBehaviour
     void Start()
     {
         curHealth = aiHealth;
+        check = checkPointD.GetComponent<CheckPointCol>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Debug.Log(randomPosinRadius);
-        Debug.Log(leftToPos);
-        EnemyNav();
 
-        if(aiHealth <= 60f)
+        Debug.Log(GetClosestEnemy());
+        Nav();
+       // curGoTo = gotoPoints[curLoot].position;
+
+        if (aiHealth <= 60f)
         {
             seriousDamage.Play();
-            coolDown = 3f; 
+        }
+        Debug.Log("cur loot point = " + gotoPoints[curLoot]);
 
-            //increase enemy difficuty - speed - accuracy - shoot time 
-            //reduce damage taken
+        if (reachedLoot)
+        {
+            Debug.Log("Reached loot: " + reachedLoot);
+            curLoot = curLoot + 1;
+
+        }
+    }
+
+    void CheckIfStuck()
+    {
+        Vector3 curPos;
+        curPos = transform.position;
+
+        if(curPos == transform.position)
+        {
+            Debug.Log("I am stuck");
         }
     }
 
@@ -79,14 +99,14 @@ public class LooterAI : MonoBehaviour
             pSImpact.Play();                                                                                                                                          
             SinkShip();
             healthSlider.fillAmount -= .01F;
-            Debug.Log(aiHealth);
+            //Debug.Log(aiHealth);
 
             if(aiHealth <= 80)
             {
                 pSImpact2.Play();
             }
-
         }
+
     }
 
     private void HardDifficulty()
@@ -108,7 +128,7 @@ public class LooterAI : MonoBehaviour
     void SinkShip()
     {
      
-          enemyNav.baseOffset -= impactDamage;
+          nav.baseOffset -= impactDamage;
     }
 
     //for debugging visuals, shows detect enemy range
@@ -120,69 +140,62 @@ public class LooterAI : MonoBehaviour
 
     IEnumerator GetRandomPos(float time)
     {
-       // enemyNav.SetDestination(target.position);
-        reachedPos = false;
-
-
         yield return new WaitForSeconds(time);
 
-        Vector3 offset = Random.insideUnitCircle * beginFireRadius;
-        randomPosinRadius = endGoal.position + offset;
-        enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
+        Vector3 offset = Random.insideUnitCircle * avoidDistance;
+        randomPosinRadius = gotoPoints[curLoot].position + offset;
+       // enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
 
-        reachedPos = true;
     }
 
-  /*  public Vector3 GetARandomTreePos()
+    void Nav()
     {
+       // Debug.Log(curLoot);
+        nav.SetDestination(gotoPoints[curLoot].position);
 
-        Bounds bounds = waterArea.bounds;
-
-        float minX = gameObject.transform.position.x - gameObject.transform.localScale.x * bounds.size.x * 0.5f;
-        float minZ = gameObject.transform.position.z - gameObject.transform.localScale.z * bounds.size.z * 0.5f;
-
-        Vector3 newVec = new Vector3(Random.Range(minX, -minX),
-                                     gameObject.transform.position.y,
-                                     Random.Range(minZ, -minZ));
-        return newVec;
-    } */
-
-
-    void EnemyNav()
-    {
-        //Vector3 offset = Random.insideUnitCircle * radius1;
-        //randomPosinRadius = target.position + offset;
-        enemyNav.SetDestination(target.position * speed * Time.deltaTime);
-
-        distance = Vector3.Distance(target.position, transform.position);
-        if (!cooledDown)
-        {
-            coolDown += Time.deltaTime;
-
-            if (distance <= beginFireRadius && coolDown > 5f)
-            {
-                cooledDown = true;
-                coolDown = 0f;
-                Debug.Log("shot");
-            }
-        }
-        cooledDown = false;
-
+        distance = Vector3.Distance(enemy[0].position, transform.position);
+  
         if(distance <= detectEnemyRange)
         {
-            Debug.Log("avodiing");
             avoiding = true;
-            reachedPos = false;
-         //   enemyNav.SetDestination(AvoidOffset());
-            enemyNav.speed = 15f;
-            enemyNav.angularSpeed = 35f;
+            nav.speed = 50f; //slight boost
+            nav.angularSpeed = 190f;
+            nav.SetDestination(AvoidOffset());
+
+            Debug.Log("Offset is: " + AvoidOffset());
         }
+    }
+
+    Transform GetClosestEnemy()
+    {
+        Transform tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (Transform t in enemy)
+        {
+            float dist = Vector3.Distance(t.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t;
+                minDist = dist;
+            }
+        }
+        return tMin;
+    }
+
+    IEnumerator GetAvoidPos(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Vector3 offsetPos = Random.insideUnitCircle * GetClosestEnemy().position;
+   
+
     }
 
     Vector3 AvoidOffset()
     {
-        Vector3 offsetPos = enemy[0].position + enemy[1].position;
-        return offsetPos;
+        StartCoroutine(GetAvoidPos(15));
+        return AvoidOffset();
         
     }
 
