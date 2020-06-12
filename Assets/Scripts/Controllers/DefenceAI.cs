@@ -50,6 +50,9 @@ public class DefenceAI : MonoBehaviour
     public float ammunition;
     public float shootTime;
     public float impactDamage;
+
+    public float minShootTime;
+    public float maxShootTime;
     bool noHealth;
 
     public Image healthSlider;
@@ -69,6 +72,7 @@ public class DefenceAI : MonoBehaviour
         timer += Time.deltaTime;
         origin = transform.position;
 
+        enemyNav.speed = 25f;
         EnemyNav();
       //  Avoid();
 
@@ -93,8 +97,8 @@ public class DefenceAI : MonoBehaviour
         }
         else
         {
-           // Debug.Log("hunting");
-            EnemyNav();
+            // Debug.Log("hunting");
+            
         }
     }
 
@@ -181,9 +185,10 @@ public class DefenceAI : MonoBehaviour
 
     void EnemyNav()
     {
+
         Vector3 offset = Random.insideUnitCircle * radius1;
         randomPosinRadius = target.position + offset;
-    
+        Attack();
 
         if (!reachedPos)
         {
@@ -216,6 +221,7 @@ public class DefenceAI : MonoBehaviour
         Rigidbody rb = Instantiate(cannonBall, ship.position, Quaternion.identity);
         rb.velocity = calcVelo;
         enemyNav.speed = 0;
+        Attack();
         canonSmoke.Play();
 
 
@@ -223,7 +229,7 @@ public class DefenceAI : MonoBehaviour
 
     public void Attack()
     {
-        enemyNav.SetDestination(target.position);
+        enemyNav.SetDestination(target.position + randomPosinRadius);
     }
 
     public void Patrol()
@@ -231,7 +237,7 @@ public class DefenceAI : MonoBehaviour
       //  Debug.Log("patrolling");
         enemyNav.isStopped = false;
 
-        int i = Random.Range(0, 7); //8 patrol point
+        int i = Random.Range(0, 7); //8 patrol points
 
         if (patrolPoints.Length > 0)
         {

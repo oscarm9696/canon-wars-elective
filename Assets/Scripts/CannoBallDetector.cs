@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class CannoBallDetector : MonoBehaviour
 {
-   /* public NavMeshAgent nav;
+    public NavMeshAgent nav;
     public Mesh waterArea;
     public Transform thisShip;
     public Transform[] targetShip;
@@ -48,9 +48,9 @@ public class CannoBallDetector : MonoBehaviour
         if (other.gameObject.tag == "PlayerCannon")
         {
             Debug.Log("Incoming!!");
-            nav.speed = 20f;
-            nav.angularSpeed = 40f;
-            nav.SetDestination(GetARandomPos() * speed * Time.deltaTime);
+          //  nav.speed = 20f;
+           // nav.angularSpeed = 40f;
+         //   nav.SetDestination(GetARandomPos() * speed * Time.deltaTime);
   
             
         }
@@ -79,6 +79,6 @@ public class CannoBallDetector : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
             
-        */
+        
 
 }

@@ -24,12 +24,16 @@ public class LooterAI : MonoBehaviour
     public GameObject checkPointD;
     private CheckPointCol check;
 
-
+    public Transform rayStartPos;
+    private RaycastHit detectorRay;
+    public float rayDistance;
 
     float distance;
     public float avoidDistance;
+    public float avoidTime;
     public float speed;
     private int enemyId;
+    bool isAvoiding;
 
     public float radius1;
     public Vector3 randomPosinRadius;
@@ -54,6 +58,7 @@ public class LooterAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isAvoiding = false;
         curHealth = aiHealth;
         check = checkPointD.GetComponent<CheckPointCol>();
     }
@@ -62,7 +67,6 @@ public class LooterAI : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(GetClosestEnemy());
         Nav();
        // curGoTo = gotoPoints[curLoot].position;
 
@@ -70,11 +74,11 @@ public class LooterAI : MonoBehaviour
         {
             seriousDamage.Play();
         }
-        Debug.Log("cur loot point = " + gotoPoints[curLoot]);
+       // Debug.Log("cur loot point = " + gotoPoints[curLoot]);
 
         if (reachedLoot)
         {
-            Debug.Log("Reached loot: " + reachedLoot);
+         //   Debug.Log("Reached loot: " + reachedLoot);
             curLoot = curLoot + 1;
 
         }
@@ -87,7 +91,7 @@ public class LooterAI : MonoBehaviour
 
         if(curPos == transform.position)
         {
-            Debug.Log("I am stuck");
+           // Debug.Log("I am stuck");
         }
     }
 
@@ -144,25 +148,26 @@ public class LooterAI : MonoBehaviour
 
         Vector3 offset = Random.insideUnitCircle * avoidDistance;
         randomPosinRadius = gotoPoints[curLoot].position + offset;
-       // enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
 
     }
 
     void Nav()
     {
        // Debug.Log(curLoot);
-        nav.SetDestination(gotoPoints[curLoot].position);
+        distance = Vector3.Distance(GetClosestEnemy().position, transform.position);
+        if(distance >= detectEnemyRange && !isAvoiding)
+        {
+            nav.SetDestination(gotoPoints[curLoot].position);
+        }
 
-        distance = Vector3.Distance(enemy[0].position, transform.position);
-  
-        if(distance <= detectEnemyRange)
+        else 
         {
             avoiding = true;
             nav.speed = 50f; //slight boost
             nav.angularSpeed = 190f;
             nav.SetDestination(AvoidOffset());
 
-            Debug.Log("Offset is: " + AvoidOffset());
+         //   Debug.Log("Offset is: " + AvoidOffset());
         }
     }
 
@@ -183,20 +188,46 @@ public class LooterAI : MonoBehaviour
         return tMin;
     }
 
-    IEnumerator GetAvoidPos(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        Vector3 offsetPos = Random.insideUnitCircle * GetClosestEnemy().position;
-   
-
-    }
 
     Vector3 AvoidOffset()
     {
-        StartCoroutine(GetAvoidPos(15));
-        return AvoidOffset();
+        Vector3 offsetPos = Random.insideUnitCircle * 50;
+        return offsetPos;
         
+    }
+
+    void RaycastHandler()
+    {
+        float tempTime = 0f;
+        Debug.DrawRay(rayStartPos.position, rayStartPos.forward * rayDistance, Color.cyan, .5f);
+
+        if (Physics.Raycast(rayStartPos.position, rayStartPos.forward, out detectorRay, rayDistance))
+        {
+            if (detectorRay.collider.tag == "Enemy")
+            {
+                Debug.Log(detectorRay.collider.name);
+                Vector3 tempPos = detectorRay.collider.transform.position;
+                nav.SetDestination(-tempPos);
+                tempTime += Time.deltaTime;
+                isAvoiding = true;
+                Debug.Log(tempTime);
+                    Debug.Log(tempPos);
+
+                if (tempTime >= avoidTime)
+                {
+                    nav.SetDestination(gotoPoints[curLoot].position);
+                    isAvoiding = false;
+                    tempTime = 0;
+                }
+                
+
+            }
+            else
+            {
+                //defAi.Patrol();
+            }
+        }
+
     }
 
 }
