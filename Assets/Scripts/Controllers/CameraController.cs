@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public GameObject lootShip;
+    private LooterAI looter;
     public Transform camPivot;
     public Transform target;
     public Transform player;
@@ -19,6 +21,9 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        looter = lootShip.GetComponent<LooterAI>();
+        target = looter.GetClosestEnemy();
+
         if (!offsetValues)
         {
             camOffset = player.position - transform.position;
@@ -33,6 +38,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        target = looter.GetClosestEnemy(); 
+
         camPivot.transform.position = target.transform.position;
 
         //x input affects y values on rotation 

@@ -9,10 +9,14 @@ public class LooterAI : MonoBehaviour
     public Transform ship;
     public Transform endGoal;
 
+    public Rigidbody rb;
+
     public Transform[] gotoPoints;
     public Transform[] enemy;
+    public Transform centre;
 
     Transform closestShip;
+    Vector3 curPos;
 
     public float detectEnemyRange;
     public NavMeshAgent nav;
@@ -22,21 +26,27 @@ public class LooterAI : MonoBehaviour
     public ParticleSystem seriousDamage;
 
     public GameObject checkPointD;
+    public GameObject cannonD;
     private CheckPointCol check;
+    private CannoBallDetector cannonDetector;
 
     public Transform rayStartPos;
     private RaycastHit detectorRay;
     public float rayDistance;
 
     float distance;
+    float time = 0f;
     public float avoidDistance;
+    public float allowedMoveTime;
+    public float waitTime;
     public float avoidTime;
     public float speed;
     private int enemyId;
-    bool isAvoiding;
+    public bool isAvoiding;
 
     public float radius1;
-    public Vector3 randomPosinRadius;
+    Vector3 randomPosinRadius;
+    Vector3 tempAvoidPos;
     public float headStart;
     
 
@@ -50,7 +60,7 @@ public class LooterAI : MonoBehaviour
 
     bool noHealth;
     bool reachedLoot;
-    bool avoiding;
+    //bool avoiding;
 
     public Image healthSlider;
 
@@ -58,15 +68,24 @@ public class LooterAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tempAvoidPos = GetRandomPoint(centre.position, 500f);
         isAvoiding = false;
+      //  curLoot = Random.Range(0, 3);
         curHealth = aiHealth;
         check = checkPointD.GetComponent<CheckPointCol>();
+        cannonDetector = cannonD.GetComponent<CannoBallDetector>();
+        allowedMoveTime = Random.Range(10f, 20f);
+        waitTime = Random.Range(1f, 5f);
+
+   
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        isAvoiding = cannonDetector.isAvoidingCannon;
+        curPos = transform.position;
+        CheckIfStuck();
+       // RaycastHandler();
         Nav();
        // curGoTo = gotoPoints[curLoot].position;
 
@@ -86,14 +105,14 @@ public class LooterAI : MonoBehaviour
 
     void CheckIfStuck()
     {
-        Vector3 curPos;
-        curPos = transform.position;
-
-        if(curPos == transform.position)
+        Vector3 vel = rb.velocity;
+        if (vel.magnitude <= .5)
         {
-           // Debug.Log("I am stuck");
+            Debug.Log("Stuck");
+            nav.SetDestination(randomPosinRadius);
         }
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -103,6 +122,7 @@ public class LooterAI : MonoBehaviour
             pSImpact.Play();                                                                                                                                          
             SinkShip();
             healthSlider.fillAmount -= .01F;
+            isAvoiding = true;
             //Debug.Log(aiHealth);
 
             if(aiHealth <= 80)
@@ -112,6 +132,7 @@ public class LooterAI : MonoBehaviour
         }
 
     }
+
 
     private void HardDifficulty()
     {
@@ -142,38 +163,76 @@ public class LooterAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectEnemyRange);
     }
 
-    IEnumerator GetRandomPos(float time)
+
+    public IEnumerator GetRandomPos(float time)
     {
+        
         yield return new WaitForSeconds(time);
 
-        Vector3 offset = Random.insideUnitCircle * avoidDistance;
-        randomPosinRadius = gotoPoints[curLoot].position + offset;
+        Vector3 tempGoTo = GetRandomPoint(gotoPoints[curLoot].position, 300f);
+        nav.SetDestination(tempGoTo);
+        //Vector3 offset = Random.insideUnitCircle * 600;
+        //randomPosinRadius = ship.position + offset;
+        //nav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
 
     }
 
     void Nav()
     {
-       // Debug.Log(curLoot);
+
         distance = Vector3.Distance(GetClosestEnemy().position, transform.position);
-        if(distance >= detectEnemyRange && !isAvoiding)
+        if(distance >= detectEnemyRange && !isAvoiding && cannonDetector.isAvoidingCannon == false)
         {
+            time += Time.deltaTime;
+            Debug.Log("Is not avoiding anything");
             nav.SetDestination(gotoPoints[curLoot].position);
+
+            if(time >= allowedMoveTime && !isAvoiding)
+            {
+                time = 0f;
+                time += Time.deltaTime;
+                nav.isStopped = true;
+                Debug.Log("Looter: waiting");
+
+                
+            }
+            if (time >= waitTime && nav.isStopped && !isAvoiding)
+            {
+                time = 0f;
+                Debug.Log("finished waiting");
+                nav.isStopped = false;
+                StartCoroutine(GetRandomPos(15f));
+            }
         }
 
-        else 
+        else  
         {
-            avoiding = true;
-            nav.speed = 50f; //slight boost
-            nav.angularSpeed = 190f;
-            nav.SetDestination(AvoidOffset());
+            nav.SetDestination(tempAvoidPos);
+            nav.speed = 45f;
+   
+            Debug.Log("Is avoiding");
 
-         //   Debug.Log("Offset is: " + AvoidOffset());
         }
     }
 
-    Transform GetClosestEnemy()
+    // Get Random Point on a Navmesh surface
+    public static Vector3 GetRandomPoint(Vector3 center, float maxDistance)
     {
-        Transform tMin = null;
+        // Get Random Point inside Sphere which position is center, radius is maxDistance
+        Vector3 randomPos = Random.insideUnitSphere * maxDistance + center;
+
+        NavMeshHit hit; // NavMesh Sampling Info Container
+
+        // from randomPos find a nearest point on NavMesh surface in range of maxDistance
+        NavMesh.SamplePosition(randomPos, out hit, maxDistance, NavMesh.AllAreas);
+
+        return hit.position;
+    }
+
+    //loops through array enemy to find clos
+    public Transform GetClosestEnemy()
+    {
+        Transform closestShip = null;
         float minDist = Mathf.Infinity;
         Vector3 currentPos = transform.position;
         foreach (Transform t in enemy)
@@ -181,53 +240,12 @@ public class LooterAI : MonoBehaviour
             float dist = Vector3.Distance(t.position, currentPos);
             if (dist < minDist)
             {
-                tMin = t;
+                closestShip = t;
                 minDist = dist;
             }
         }
-        return tMin;
+        return closestShip;
     }
 
-
-    Vector3 AvoidOffset()
-    {
-        Vector3 offsetPos = Random.insideUnitCircle * 50;
-        return offsetPos;
-        
-    }
-
-    void RaycastHandler()
-    {
-        float tempTime = 0f;
-        Debug.DrawRay(rayStartPos.position, rayStartPos.forward * rayDistance, Color.cyan, .5f);
-
-        if (Physics.Raycast(rayStartPos.position, rayStartPos.forward, out detectorRay, rayDistance))
-        {
-            if (detectorRay.collider.tag == "Enemy")
-            {
-                Debug.Log(detectorRay.collider.name);
-                Vector3 tempPos = detectorRay.collider.transform.position;
-                nav.SetDestination(-tempPos);
-                tempTime += Time.deltaTime;
-                isAvoiding = true;
-                Debug.Log(tempTime);
-                    Debug.Log(tempPos);
-
-                if (tempTime >= avoidTime)
-                {
-                    nav.SetDestination(gotoPoints[curLoot].position);
-                    isAvoiding = false;
-                    tempTime = 0;
-                }
-                
-
-            }
-            else
-            {
-                //defAi.Patrol();
-            }
-        }
-
-    }
 
 }

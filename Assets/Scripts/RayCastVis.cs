@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RayCastVis : MonoBehaviour
 {
-    public float rayDistance;
+    public float rayDistance = 400f;
     public Transform rayStartPos;
     private RaycastHit detectorRay;
 
@@ -25,7 +25,7 @@ public class RayCastVis : MonoBehaviour
 
     void RaycastHandler()
     {
-        Debug.DrawRay(rayStartPos.position, rayStartPos.forward * rayDistance, Color.cyan, .5f);
+        Debug.DrawRay(rayStartPos.position, rayStartPos.forward * rayDistance, Color.cyan, 1f);
 
         if (Physics.Raycast(rayStartPos.position, rayStartPos.forward, out detectorRay, rayDistance))
         {

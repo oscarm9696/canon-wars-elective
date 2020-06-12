@@ -30,7 +30,7 @@ public class FloatingBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        waterDensity = Random.Range(1f,4f);
+      //  waterDensity = Random.Range(1f,4f);
 
         //creates an acting force towards the water to mimic boat weight
         force = 1.0f - ((transform.position.y - boatDisplace) / waterDensity) * Time.deltaTime;

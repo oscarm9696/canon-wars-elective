@@ -9,6 +9,8 @@ public class DefenceAI : MonoBehaviour
     public Transform ship;
     public Rigidbody cannonBall;
     public GameObject player;
+    public Rigidbody rb;
+
 
     public float beginFireRadius;
     public Transform target;
@@ -43,9 +45,6 @@ public class DefenceAI : MonoBehaviour
     public float wanderRad;
     public float wanderTime;
 
-    public float aiHealth;
-    public float damgeTaken = 1f;
-    public float curHealth;
     public float aiDifficulty;
     public float ammunition;
     public float shootTime;
@@ -61,7 +60,7 @@ public class DefenceAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        curHealth = aiHealth;
+        Patrol();
         timer = wanderTime;
     }
 
@@ -72,27 +71,21 @@ public class DefenceAI : MonoBehaviour
         timer += Time.deltaTime;
         origin = transform.position;
 
-        enemyNav.speed = 25f;
+        CheckIfStuck();
+
         EnemyNav();
-      //  Avoid();
+       // Vector3 goTo = patrolPoints[curPoint].position;
+       // enemyNav.SetDestination(goTo);
 
-        shootTime = Random.Range(3f, 7f);
+
+        shootTime = Random.Range(3f, 10f);
 
 
-        if (aiHealth <= 60f)
-        {
-            seriousDamage.Play();
-            shootTime = Random.Range(1.75f, 3.75f);
-            coolDown = 3f;
-
-            //increase enemy difficuty - speed - accuracy - shoot time 
-            //reduce damage taken
-        }
-        if(timer >= wanderTime)
+        if(timer <= wanderTime)
         {
             //Debug.Log("wandering");
-            Vector3 goTo = RandomNavSphere(transform.position, wanderRad, -1);
-            enemyNav.SetDestination(goTo);
+           // Vector3 goTo = patrolPoints[curPoint].position;
+           // enemyNav.SetDestination(goTo);
             timer = 0f;
         }
         else
@@ -103,49 +96,37 @@ public class DefenceAI : MonoBehaviour
     }
 
 
-    public Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+    void CheckIfStuck()
     {
-        Vector3 randDirection = Random.insideUnitSphere * dist;
-
-        randDirection += origin;
-
-        NavMeshHit navHit;
-
-        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
-
-        return navHit.position;
+        Vector3 vel = rb.velocity;
+        if (vel.magnitude <= .5)
+        {
+            //Debug.Log("Stuck");
+            enemyNav.SetDestination(patrolPoints[Random.Range(0, 7)].position);
+        }
     }
-
 
     private void HardDifficulty()
     {
-        aiHealth = 125;
-        damgeTaken = .5f;
+ 
         shootTime = Random.Range(.5f, 1.5f);
     }
 
 
     private void MediumDifficulty()
     {
-        aiHealth = 125;
-        damgeTaken = 1f;
+
         shootTime = Random.Range(1.75f, 3.75f);
     }
 
 
     private void EasyDifficulty()
     {
-        aiHealth = 125;
-        damgeTaken = 2f;
+     
         shootTime = Random.Range(1.75f, 5.75f);
     }
 
 
-    void SinkShip()
-    {
-
-        enemyNav.baseOffset -= impactDamage;
-    }
 
 
     //for debugging visuals, shows radius projectile range
@@ -168,35 +149,31 @@ public class DefenceAI : MonoBehaviour
     }
 
 
-
-    //center of gravity for boat, should be between -.5 - 0.0
-   void ApplyCOG()
-    {
-        if (!mCenterOfGrav)
-        {
-            mCenterOfGrav = new GameObject("COG").transform;
-            mCenterOfGrav.SetParent(transform);
-        }
-        mCenterOfGrav.position = centerOfGrav;
-        GetComponent<Rigidbody>().centerOfMass = mCenterOfGrav.position;
-    }     
-    
-
-
     void EnemyNav()
     {
 
-        Vector3 offset = Random.insideUnitCircle * radius1;
-        randomPosinRadius = target.position + offset;
-        Attack();
+       // Vector3 offset = Random.insideUnitCircle * radius1;
+        //randomPosinRadius = target.position + offset;
+        Patrol();
 
         if (!reachedPos)
         {
-            StartCoroutine(GetRandomPos(50));
+            Vector3 offset = Random.insideUnitCircle * radius1;
+            randomPosinRadius = ship.position + offset;
+            //enemyNav.SetDestination(randomPosinRadius * speed * Time.deltaTime);
         }
-        ApplyCOG();
+        else
+        {
+            //Attack();
+        }
 
-        distance = Vector3.Distance(target.position, transform.position);
+        distance = Vector3.Distance(target.position, origin);
+        if(distance <= beginFireRadius)
+        {
+            Attack();
+            enemyNav.speed = 20f;
+        }
+
         if (!cooledDown)
         {
             
@@ -205,6 +182,7 @@ public class DefenceAI : MonoBehaviour
             if (distance <= beginFireRadius && coolDown > 5f)
             {
                 FireCannon();
+                Attack();
                 cooledDown = true;
                 coolDown = 0f;
                 Debug.Log("shot");
@@ -217,11 +195,11 @@ public class DefenceAI : MonoBehaviour
     void FireCannon()
     {
         Vector3 calcVelo = CalcVelocity(target.position, transform.position, 1f);
-        //transform.rotation = Quaternion.LookRotation(calcVelo);
+       // transform.rotation = Quaternion.LookRotation(calcVelo);
         Rigidbody rb = Instantiate(cannonBall, ship.position, Quaternion.identity);
         rb.velocity = calcVelo;
-        enemyNav.speed = 0;
-        Attack();
+       //enemyNav.speed = 0;
+       //Attack();
         canonSmoke.Play();
 
 
@@ -229,30 +207,43 @@ public class DefenceAI : MonoBehaviour
 
     public void Attack()
     {
-        enemyNav.SetDestination(target.position + randomPosinRadius);
+        Debug.Log("Attacking");
+        enemyNav.SetDestination(target.position);
+        float distanceTemp = Vector3.Distance(target.position, transform.position);
+        if (distanceTemp <= 40f)
+        {
+            enemyNav.isStopped = true;
+        }
     }
 
     public void Patrol()
     {
       //  Debug.Log("patrolling");
         enemyNav.isStopped = false;
-
-        int i = Random.Range(0, 7); //8 patrol points
+       // Debug.Log("curpoint= " + curPoint);
 
         if (patrolPoints.Length > 0)
         {
-            enemyNav.SetDestination(patrolPoints[i].position); //ensure defense ships alwasy start randomly
+            enemyNav.SetDestination(patrolPoints[curPoint].position); //ensure defense ships alwasy start randomly
 
-            if (transform.position == patrolPoints[curPoint].position || Vector3.Distance(transform.position, patrolPoints[curPoint].position) < 0.2f)
+            if (transform.position == patrolPoints[curPoint].position || Vector3.Distance(transform.position, patrolPoints[curPoint].position) < 20f)
             {
-                //curPoint++;    //use distance if needed(lower precision)
+                reachedPos = true;
+                curPoint++;
+
+                if (curPoint >= 8)
+                {
+                    curPoint = 0;
+                    Debug.Log("reset curpoint" + curPoint);
+                   // enemyNav.SetDestination(patrolPoints[curPoint].position);
+                }
+
             }
-            if (curPoint >= patrolPoints.Length)
-            {
-               // curPoint = 0;
-            }
+           
         }
+
     }
+
 
     //calculating velocity of cannon ball based on x, y, z values in relation to time
     //using DST (distance / speed = time, distance / time = speed, time x speed = distance)

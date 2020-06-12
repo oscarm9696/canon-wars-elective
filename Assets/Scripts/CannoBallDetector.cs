@@ -12,6 +12,9 @@ public class CannoBallDetector : MonoBehaviour
     [HideInInspector]
     public Transform target;
 
+    public GameObject looter;
+    private LooterAI looterAi;
+
 
     Vector3 shipPos;
     Vector3 avoidPos;
@@ -19,16 +22,20 @@ public class CannoBallDetector : MonoBehaviour
     public float radius = 300f;
     public float speed = 25f;
 
+    public bool isAvoidingCannon;
+
     // Start is called before the first frame update
     void Start()
     {
-        //shipPos = thisShip.position; 
+        //shipPos = thisShip.position
+        looterAi = looter.GetComponent<LooterAI>(); 
+        isAvoidingCannon = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        shipPos = transform.position;
     }
 
     //had intention to use this as a secondry avoid behaviour except
@@ -43,19 +50,28 @@ public class CannoBallDetector : MonoBehaviour
     }
 
     //detects cannon and sets nav to random pos generated below
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "PlayerCannon")
-        {
-            Debug.Log("Incoming!!");
-          //  nav.speed = 20f;
-           // nav.angularSpeed = 40f;
-         //   nav.SetDestination(GetARandomPos() * speed * Time.deltaTime);
-  
-            
-        }
+    /* private void OnTriggerEnter(Collider other)
+     {
+         if (other.gameObject.tag == "PlayerCannon")
+         {
+             isAvoidingCannon = true;
+             Debug.Log("isAvoidingCannon:" + isAvoidingCannon);
+             //StartCoroutine(GetRandomPos(2f));
 
+         }   
+
+
+     }       */
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "PlayerCannon")
+        {
+            isAvoidingCannon = true;
+            Debug.Log("isAvoidingCannon:" + isAvoidingCannon);
+        }
     }
+
+
 
     //gets a random pos within the water area mesh
     public Vector3 GetARandomPos()
