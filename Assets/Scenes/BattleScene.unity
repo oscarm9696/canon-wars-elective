@@ -106,7 +106,7 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 25
+    agentRadius: 10
     agentHeight: 4
     agentSlope: 0
     agentClimb: 0
@@ -114,7 +114,7 @@ NavMeshSettings:
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 8.333333
+    cellSize: 3.3333333
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -1125,7 +1125,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ship: {fileID: 318209396}
   endGoal: {fileID: 1227962855}
-  gotoPoints: []
+  gotoPoints:
+  - {fileID: 230557573}
+  - {fileID: 709899637}
+  - {fileID: 2003279003}
   enemy:
   - {fileID: 1064241677}
   - {fileID: 1945818231}
@@ -1159,10 +1162,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 25
-  m_Speed: 10
+  m_Speed: 40
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 75
+  m_AngularSpeed: 100
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -21619,7 +21622,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.07017387, y: 0.990382, z: -0.102111064, w: 0.061583024}
+  m_LocalRotation: {x: 0.9745508, y: 0.18982036, z: 0.048738703, w: 0.108828634}
   m_LocalPosition: {x: 633, y: 144.1, z: 1003.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -24348,7 +24351,7 @@ GameObject:
   - component: {fileID: 1211321672}
   m_Layer: 0
   m_Name: BottomPlane
-  m_TagString: Untagged
+  m_TagString: SeaBed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
@@ -25775,7 +25778,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368081414}
-  m_LocalRotation: {x: 0.08368092, y: -0.9893323, z: -0.09137057, w: -0.07661956}
+  m_LocalRotation: {x: 0.97187, y: 0.20310009, z: 0.087139644, w: -0.08139913}
   m_LocalPosition: {x: 633, y: -150.36821, z: 1003.12}
   m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000002}
   m_Children: []
@@ -36417,7 +36420,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942570720}
-  m_LocalRotation: {x: 0.00000003585592, y: 0.000000055879354, z: 0.0069003925, w: 0.9999762}
+  m_LocalRotation: {x: 0.000000029802322, y: -0.0000000055879354, z: 0.0069009364,
+    w: 0.9999763}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

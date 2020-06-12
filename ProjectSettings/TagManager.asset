@@ -10,6 +10,7 @@ TagManager:
   - PlayerCannon
   - Looter
   - LootPoint
+  - SeaBed
   layers:
   - Default
   - TransparentFX
