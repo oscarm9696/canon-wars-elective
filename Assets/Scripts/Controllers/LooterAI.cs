@@ -207,8 +207,9 @@ public class LooterAI : MonoBehaviour
 
         else  
         {
-            nav.SetDestination(tempAvoidPos);
-            nav.speed = 45f;
+           // nav.SetDestination(gotoPoints[Random.Range(0, 3)].position);
+            nav.speed = 50f;
+            nav.angularSpeed = 150f;
    
             Debug.Log("Is avoiding");
 
