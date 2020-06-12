@@ -9,6 +9,7 @@ TagManager:
   - EnemyCannon
   - PlayerCannon
   - Looter
+  - LootPoint
   layers:
   - Default
   - TransparentFX
